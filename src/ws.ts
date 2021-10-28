@@ -1,12 +1,11 @@
-// @ts-expect-error 
+// @ts-expect-error
 import ETH from './index';
 
 module.exports = class WS extends ETH {
-  constructor (socket: any) {
-    super(new RPC(socket))
+  constructor(socket: any) {
+    super(new RPC(socket));
   }
-}
-
+};
 
 class RPC {
   destroyed: any;
@@ -18,129 +17,129 @@ class RPC {
   queued: any;
   socket: any;
   subscriptions: any;
-  constructor (socket: any) {
-    this.id = 0
-    this.inflight = new Map()
-    this.subscriptions = new Map()
-    this.socket = socket
+  constructor(socket: any) {
+    this.id = 0;
+    this.inflight = new Map();
+    this.subscriptions = new Map();
+    this.socket = socket;
 
-    const self = this
+    const self = this;
 
-    on(this.socket, 'message', onmessage)
-    on(this.socket, 'close', onclose)
-    on(this.socket, 'open', onopen)
+    on(this.socket, 'message', onmessage);
+    on(this.socket, 'close', onclose);
+    on(this.socket, 'open', onopen);
 
-    this.destroyed = false
-    this.ending = null
-    this.endingResolve = null
-    this.queued = []
-    this.opened = false
+    this.destroyed = false;
+    this.ending = null;
+    this.endingResolve = null;
+    this.queued = [];
+    this.opened = false;
 
-    function onopen () {
-      self.opened = true
-      for (const s of self.queued) self.socket.send(s)
+    function onopen() {
+      self.opened = true;
+      for (const s of self.queued) self.socket.send(s);
     }
 
-    function onclose () {
-      self.destroyed = true
-      self.socket = null
+    function onclose() {
+      self.destroyed = true;
+      self.socket = null;
       for (const [resolve, reject] of self.inflight.values()) {
-        reject(new Error('WebSocket destroyed'))
+        reject(new Error('WebSocket destroyed'));
       }
-      if (self.endingResolve) self.endingResolve()
+      if (self.endingResolve) self.endingResolve();
     }
 
-    function onmessage (message: any) {
-      let obj
+    function onmessage(message: any) {
+      let obj;
 
       try {
-        obj = JSON.parse(message)
+        obj = JSON.parse(message);
       } catch (_) {
-        return false
+        return false;
       }
 
       if (obj.method === 'parity_subscription') {
-        const cb = self.subscriptions.get(obj.params.subscription)
+        const cb = self.subscriptions.get(obj.params.subscription);
         if (cb != null) {
           if (obj.params.error) {
-            const err = new Error(obj.params.error.message)
+            const err = new Error(obj.params.error.message);
             // @ts-expect-error
-            err.code = obj.params.error.code
-            cb(err)
-            return true
+            err.code = obj.params.error.code;
+            cb(err);
+            return true;
           }
 
-          cb(null, obj.params.result)
-          return true
+          cb(null, obj.params.result);
+          return true;
         }
       }
 
-      const p = self.inflight.get(obj.id)
-      if (!p) return false
+      const p = self.inflight.get(obj.id);
+      if (!p) return false;
 
-      self.inflight.delete(obj.id)
+      self.inflight.delete(obj.id);
       if (self.inflight.size === 0) {
-        if (self.ending) self.socket.close()
+        if (self.ending) self.socket.close();
       }
 
       if (obj.error) {
-        const err = new Error(obj.error.message)
+        const err = new Error(obj.error.message);
         // @ts-expect-error
-        err.code = obj.error.code
-        p[1](err)
-        return true
+        err.code = obj.error.code;
+        p[1](err);
+        return true;
       }
 
-      p[0](obj.result)
-      return true
+      p[0](obj.result);
+      return true;
     }
   }
 
-  request (method: any, params: any) {
-    if (!this.socket) return Promise.reject(new Error('Socket destroyed'))
+  request(method: any, params: any) {
+    if (!this.socket) return Promise.reject(new Error('Socket destroyed'));
 
-    const id = '' + ++this.id
-    const obj = { jsonrpc: '2.0', id, method, params }
+    const id = '' + ++this.id;
+    const obj = { jsonrpc: '2.0', id, method, params };
 
     return new Promise((resolve, reject) => {
-      this.inflight.set(id, [resolve, reject])
+      this.inflight.set(id, [resolve, reject]);
 
-      const s = JSON.stringify(obj)
-      if (!this.opened) this.queued.push(s)
-      else this.socket.send(s)
-    })
+      const s = JSON.stringify(obj);
+      if (!this.opened) this.queued.push(s);
+      else this.socket.send(s);
+    });
   }
 
   // @ts-expect-error
-  async subscribe (method: any, params: any, cb: any) {
-    if (cb == null) return this.subscribe(method, [], params)
+  async subscribe(method: any, params: any, cb: any) {
+    if (cb == null) return this.subscribe(method, [], params);
 
-    const id = await this.request('parity_subscribe', [method, params])
-    this.subscriptions.set(id, cb)
+    const id = await this.request('parity_subscribe', [method, params]);
+    this.subscriptions.set(id, cb);
 
     return async () => {
-      await this.request('parity_unsubscribe', [id])
-      this.subscriptions.delete(id)
-    }
+      await this.request('parity_unsubscribe', [id]);
+      this.subscriptions.delete(id);
+    };
   }
 
-  end () {
-    this.ending = new Promise(resolve => {
+  end() {
+    this.ending = new Promise((resolve) => {
       // @ts-expect-error
-      if (!this.socket) return resolve()
-      this.endingResolve = resolve
-      if (this.inflight.size === 0) this.socket.close()
-    })
+      if (!this.socket) return resolve();
+      this.endingResolve = resolve;
+      if (this.inflight.size === 0) this.socket.close();
+    });
 
-    return this.ending
+    return this.ending;
   }
 
-  destroy () {
-    if (this.socket) this.socket.close()
+  destroy() {
+    if (this.socket) this.socket.close();
   }
 }
 
-function on (e: any, name: any, fn: any) {
-  if (e.on) e.on(name, fn)
-  else if (e.addEventListener) e.addEventListener(name, fn)
+function on(e: any, name: any, fn: any) {
+  if (e.on) e.on(name, fn);
+  else if (e.addEventListener) e.addEventListener(name, fn);
 }

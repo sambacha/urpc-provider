@@ -1,0 +1,42 @@
+{
+  "name": "nanoeth",
+  "version": "2.6.1",
+  "description": "Tiny RPC module to request methods on an ETH node",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@ethersproject/base64": "^5.5.0",
+    "@ethersproject/bytes": "^5.5.0",
+    "@ethersproject/logger": "^5.5.0",
+    "@ethersproject/properties": "^5.5.0",
+    "@ethersproject/strings": "^5.5.0",
+    "got": "^11.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperdivision/nanoeth.git"
+  },
+  "keywords": [
+    "eth",
+    "parity"
+  ],
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyperdivision/nanoeth/issues"
+  },
+  "homepage": "https://github.com/hyperdivision/nanoeth#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "@types/verror": "^1.10.5",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "tsdx": "^0.14.1",
+    "typescript": "^4.4.4",
+    "verror": "^1.10.0"
+  }
+}

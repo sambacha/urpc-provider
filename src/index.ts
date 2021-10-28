@@ -1,276 +1,295 @@
-
 class RPCRequest {
   _promise: any;
   args: any;
   method: any;
   promise: any;
   rpc: any;
-  constructor (rpc: any, method: any, args = []) {
-    this.rpc = rpc
-    this.method = method
-    this.args = args
+  constructor(rpc: any, method: any, args = []) {
+    this.rpc = rpc;
+    this.method = method;
+    this.args = args;
 
-    this._promise = null
+    this._promise = null;
   }
 
-  then (resolve: any, reject: any) {
-    if (this.promise == null) this.promise = this.rpc.request(this.method, this.args)
-    return this.promise.then(resolve, reject)
+  then(resolve: any, reject: any) {
+    if (this.promise == null)
+      this.promise = this.rpc.request(this.method, this.args);
+    return this.promise.then(resolve, reject);
   }
 
-  catch (reject: any) {
-    if (this.promise == null) this.promise = this.rpc.request(this.method, this.args)
-    return this.promise.catch(reject)
+  catch(reject: any) {
+    if (this.promise == null)
+      this.promise = this.rpc.request(this.method, this.args);
+    return this.promise.catch(reject);
   }
 
-  finally (cb: any) {
-    if (this.promise == null) this.promise = this.rpc.request(this.method, this.args)
-    return this.promise.finally(cb)
+  finally(cb: any) {
+    if (this.promise == null)
+      this.promise = this.rpc.request(this.method, this.args);
+    return this.promise.finally(cb);
   }
 }
 
 module.exports = class ETH {
   rpc: any;
-  constructor (rpc: any) {
-    this.rpc = rpc
+  constructor(rpc: any) {
+    this.rpc = rpc;
   }
 
-  subscribe (req: any, cb: any) {
-    return req.rpc.subscribe(req.method, req.args, cb)
+  subscribe(req: any, cb: any) {
+    return req.rpc.subscribe(req.method, req.args, cb);
   }
 
-  accounts () {
+  accounts() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_accounts', [])
+    return new Request(this.rpc, 'eth_accounts', []);
   }
 
-  blockNumber () {
+  blockNumber() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_blockNumber', [])
+    return new Request(this.rpc, 'eth_blockNumber', []);
   }
 
-  call (obj: any, from: any) {
+  call(obj: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_call', from ? [obj, from] : [obj])
+    return new Request(this.rpc, 'eth_call', from ? [obj, from] : [obj]);
   }
 
-  chainId () {
+  chainId() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_chainId', [])
+    return new Request(this.rpc, 'eth_chainId', []);
   }
 
-  coinbase () {
+  coinbase() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_coinbase', [])
+    return new Request(this.rpc, 'eth_coinbase', []);
   }
 
-  estimateGas (obj: any, from: any) {
+  estimateGas(obj: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_estimateGas', from ? [obj, from] : [obj])
+    return new Request(this.rpc, 'eth_estimateGas', from ? [obj, from] : [obj]);
   }
 
-  gasPrice () {
+  gasPrice() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_gasPrice', [])
+    return new Request(this.rpc, 'eth_gasPrice', []);
   }
 
-  getBalance (obj: any, from: any) {
+  getBalance(obj: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getBalance', from ? [obj, from] : [obj])
+    return new Request(this.rpc, 'eth_getBalance', from ? [obj, from] : [obj]);
   }
 
-  getBlockByHash (hash: any, tx: any) {
+  getBlockByHash(hash: any, tx: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getBlockByHash', [hash, tx || false])
+    return new Request(this.rpc, 'eth_getBlockByHash', [hash, tx || false]);
   }
 
-  getBlockByNumber (n: any, tx: any) {
+  getBlockByNumber(n: any, tx: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getBlockByNumber', [n, tx || false])
+    return new Request(this.rpc, 'eth_getBlockByNumber', [n, tx || false]);
   }
 
-  getBlockTransactionCountByHash (hash: any) {
+  getBlockTransactionCountByHash(hash: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getBlockTransactionCountByHash', [hash])
+    return new Request(this.rpc, 'eth_getBlockTransactionCountByHash', [hash]);
   }
 
-  getBlockTransactionCountByNumber (n: any) {
+  getBlockTransactionCountByNumber(n: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getBlockTransactionCountByNumber', [n])
+    return new Request(this.rpc, 'eth_getBlockTransactionCountByNumber', [n]);
   }
 
-  getCode (addr: any, from: any) {
+  getCode(addr: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getCode', from ? [addr, from] : [addr])
+    return new Request(this.rpc, 'eth_getCode', from ? [addr, from] : [addr]);
   }
 
-  getFilterChanges (id: any) {
+  getFilterChanges(id: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getFilterChanges', [id])
+    return new Request(this.rpc, 'eth_getFilterChanges', [id]);
   }
 
-  getFilterLogs (id: any) {
+  getFilterLogs(id: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getFilterLogs', [id])
+    return new Request(this.rpc, 'eth_getFilterLogs', [id]);
   }
 
-  getLogs (obj: any) {
+  getLogs(obj: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getLogs', [obj])
+    return new Request(this.rpc, 'eth_getLogs', [obj]);
   }
 
-  getStorageAt (addr: any, pos: any, from: any) {
+  getStorageAt(addr: any, pos: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getStorageAt', from ? [addr, pos, from] : [addr, pos])
+    return new Request(
+      this.rpc,
+      'eth_getStorageAt',
+      from ? [addr, pos, from] : [addr, pos],
+    );
   }
 
-  getTransactionByBlockHashAndIndex (hash: any, pos: any) {
+  getTransactionByBlockHashAndIndex(hash: any, pos: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getTransactionByBlockHashAndIndex', [hash, pos])
+    return new Request(this.rpc, 'eth_getTransactionByBlockHashAndIndex', [
+      hash,
+      pos,
+    ]);
   }
 
-  getTransactionByBlockNumberAndIndex (hash: any, pos: any) {
+  getTransactionByBlockNumberAndIndex(hash: any, pos: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getTransactionByBlockNumberAndIndex', [hash, pos])
+    return new Request(this.rpc, 'eth_getTransactionByBlockNumberAndIndex', [
+      hash,
+      pos,
+    ]);
   }
 
-  getTransactionByHash (hash: any) {
+  getTransactionByHash(hash: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getTransactionByHash', [hash])
+    return new Request(this.rpc, 'eth_getTransactionByHash', [hash]);
   }
 
-  getTransactionCount (addr: any, from: any) {
+  getTransactionCount(addr: any, from: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getTransactionCount', from ? [addr, from] : [addr])
+    return new Request(
+      this.rpc,
+      'eth_getTransactionCount',
+      from ? [addr, from] : [addr],
+    );
   }
 
-  getTransactionReceipt (hash: any) {
+  getTransactionReceipt(hash: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getTransactionReceipt', [hash])
+    return new Request(this.rpc, 'eth_getTransactionReceipt', [hash]);
   }
 
-  getUncleByBlockHashAndIndex (hash: any, pos: any) {
+  getUncleByBlockHashAndIndex(hash: any, pos: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getUncleByBlockHashAndIndex', [hash, pos])
+    return new Request(this.rpc, 'eth_getUncleByBlockHashAndIndex', [
+      hash,
+      pos,
+    ]);
   }
 
-  getUncleByBlockNumberAndIndex (n: any, pos: any) {
+  getUncleByBlockNumberAndIndex(n: any, pos: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getUncleByBlockNumberAndIndex', [n, pos])
+    return new Request(this.rpc, 'eth_getUncleByBlockNumberAndIndex', [n, pos]);
   }
 
-  getUncleCountByBlockHash (hash: any) {
+  getUncleCountByBlockHash(hash: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getUncleCountByBlockHash', [hash])
+    return new Request(this.rpc, 'eth_getUncleCountByBlockHash', [hash]);
   }
 
-  getUncleCountByBlockNumber (hash: any) {
+  getUncleCountByBlockNumber(hash: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getUncleCountByBlockNumber', [hash])
+    return new Request(this.rpc, 'eth_getUncleCountByBlockNumber', [hash]);
   }
 
-  getWork () {
+  getWork() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_getWork', [])
+    return new Request(this.rpc, 'eth_getWork', []);
   }
 
-  hashrate () {
+  hashrate() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_hashrate', [])
+    return new Request(this.rpc, 'eth_hashrate', []);
   }
 
-  mining () {
+  mining() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_mining', [])
+    return new Request(this.rpc, 'eth_mining', []);
   }
 
-  newBlockFilter () {
+  newBlockFilter() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_newBlockFilter', [])
+    return new Request(this.rpc, 'eth_newBlockFilter', []);
   }
 
-  newFilter (obj: any) {
+  newFilter(obj: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_newFilter', [obj])
+    return new Request(this.rpc, 'eth_newFilter', [obj]);
   }
 
-  newPendingTransactionFilter () {
+  newPendingTransactionFilter() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_newPendingTransactionFilter', [])
+    return new Request(this.rpc, 'eth_newPendingTransactionFilter', []);
   }
 
-  protocolVersion () {
+  protocolVersion() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_protocolVersion', [])
+    return new Request(this.rpc, 'eth_protocolVersion', []);
   }
 
-  sendRawTransaction (data: any) {
+  sendRawTransaction(data: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_sendRawTransaction', [data])
+    return new Request(this.rpc, 'eth_sendRawTransaction', [data]);
   }
 
-  sendTransaction (data: any) {
+  sendTransaction(data: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_sendTransaction', [data])
+    return new Request(this.rpc, 'eth_sendTransaction', [data]);
   }
 
-  sign (addr: any, data: any) {
+  sign(addr: any, data: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_sign', [addr, data])
+    return new Request(this.rpc, 'eth_sign', [addr, data]);
   }
 
-  signTransaction (obj: any) {
+  signTransaction(obj: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_signTransaction', [obj])
+    return new Request(this.rpc, 'eth_signTransaction', [obj]);
   }
 
-  submitHashrate (a: any, b: any) {
+  submitHashrate(a: any, b: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_submitHashrate', [a, b])
+    return new Request(this.rpc, 'eth_submitHashrate', [a, b]);
   }
 
-  submitWork (a: any, b: any, c: any) {
+  submitWork(a: any, b: any, c: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_submitWork', [a, b, c])
+    return new Request(this.rpc, 'eth_submitWork', [a, b, c]);
   }
 
-  syncing () {
+  syncing() {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_syncing', [])
+    return new Request(this.rpc, 'eth_syncing', []);
   }
 
-  uninstallFilter (id: any) {
+  uninstallFilter(id: any) {
     // @ts-expect-error 2554
-    return new Request(this.rpc, 'eth_uninstallFilter', [id])
+    return new Request(this.rpc, 'eth_uninstallFilter', [id]);
   }
 
-  end () {
-    return this.rpc.end ? this.rpc.end() : Promise.resolve()
+  end() {
+    return this.rpc.end ? this.rpc.end() : Promise.resolve();
   }
 
-  destroy () {
-    if (this.rpc.destroy) this.rpc.destroy()
+  destroy() {
+    if (this.rpc.destroy) this.rpc.destroy();
   }
 
-  get destroyed () {
-    return !!this.rpc.destroyed
+  get destroyed() {
+    return !!this.rpc.destroyed;
   }
 
-  static hexToBigInt (s: any) {
+  static hexToBigInt(s: any) {
     // @ts-expect-error 2554
-    return BigInt(s, 16)
+    return BigInt(s, 16);
   }
 
-  static bigIntToHex (n: any) {
-    return '0x' + n.toString(16)
+  static bigIntToHex(n: any) {
+    return '0x' + n.toString(16);
   }
 
-  static hexToNumber (s: any) {
+  static hexToNumber(s: any) {
     // @ts-expect-error 2554
-    return Number(s, 16)
+    return Number(s, 16);
   }
 
-  static numberToHex (n: any) {
-    return '0x' + n.toString(16)
+  static numberToHex(n: any) {
+    return '0x' + n.toString(16);
   }
-}
+};
